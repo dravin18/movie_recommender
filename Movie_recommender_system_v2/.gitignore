@@ -1,0 +1,11 @@
+mongo_basics/
+app_testing.py
+app_testing.ipynb
+archive/
+database/
+__pycache__/
+.DS_Store
+backend/__pycache__/
+backend/module/__pycache__/
+backend/.env
+frontend/__pycache__/

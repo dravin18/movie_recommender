@@ -1,0 +1,50 @@
+services:
+  fast_api:
+    build:  
+      context: backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - mongodb_database
+    
+    env_file:
+      - ./backend/.env
+    
+    volumes:
+      - ./backend:/app
+
+    # environment:
+    #   - MONGODB_HOST_NAME = mongodb_database
+
+  stream_lit:
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - fast_api
+    environment:
+      - API_HOST=fast_api
+
+  mongodb_database: 
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
+    container_name: mongo
+
+    volumes:
+      - movie_recomm_database:/data/db
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: maatran
+    command: ["--auth"]
+
+volumes:
+  movie_recomm_database:
